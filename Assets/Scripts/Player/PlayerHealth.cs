@@ -8,10 +8,10 @@ public class PlayerHealth : MonoBehaviour {
     [SerializeField] private int lifes = 3;
     [SerializeField] private float minimumPosition;
     [SerializeField] private float destroyPosition;
+    [SerializeField] private float deathForceFall, deathForceLife;
 
     private bool canRemoveLife = true;
     private const float lifeTime = 0.1f;
-    public int deathForce;
     private bool deathToggled;
     private string thisScene;
     private bool canKill;
@@ -31,12 +31,12 @@ public class PlayerHealth : MonoBehaviour {
     private void Update(){
        if(health <= 0 && !deathToggled){
             deathToggled = true;
-            StartCoroutine("DeathSequence");
+            StartCoroutine("DeathSequence", "Life");
         }
 
        if(transform.position.y <= minimumPosition && !deathToggled){
             deathToggled = true;
-            StartCoroutine("DeathSequence");
+            StartCoroutine("DeathSequence", "Fall");
         }
 
        if(transform.position.y <= destroyPosition && canKill){
@@ -61,13 +61,22 @@ public class PlayerHealth : MonoBehaviour {
         canRemoveLife = true;
     }
 
-    IEnumerator DeathSequence(){
-        yield return new WaitForSeconds(0.1f);
+    IEnumerator DeathSequence(string Type){
         playerMovementScript.enabled = false;
         colliderScript.isTrigger = true;
         rigid.constraints = RigidbodyConstraints2D.FreezePositionX;
-        rigid.AddForce(new Vector2(0, deathForce), ForceMode2D.Impulse);
-        yield return new WaitForSeconds(1);
+
+        switch (Type)
+        {
+            case "Fall":
+                rigid.AddForce(new Vector2(0, deathForceFall), ForceMode2D.Impulse);
+                break;
+
+            case "Life":
+                rigid.AddForce(new Vector2(0, deathForceLife), ForceMode2D.Impulse);
+                break;
+        }
+        yield return new WaitForSeconds(1.5f);
         canKill = true;
     }
 }
