@@ -10,12 +10,13 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckRadius;
+    [SerializeField] private float enemyTouchForce;
 
     private Rigidbody2D rigid;
     private float axis;
     private bool jumpPressed;
     private bool isGrounded;
-
+    private bool asTouchedEnemy;
 
 	void Start () {
         rigid = GetComponent<Rigidbody2D>();
@@ -48,6 +49,16 @@ public class PlayerMovement : MonoBehaviour {
 
     void FixedUpdate () {
        Vector2 velocity = new Vector2(axis * moveSpeed, rigid.velocity.y);
-        rigid.velocity = velocity;
-	}
+
+        if (!asTouchedEnemy){
+            rigid.velocity = velocity;
+        }
+    }
+
+    public IEnumerator EnemyTouch(Vector2 forceVector){
+        asTouchedEnemy = true;
+        rigid.AddForce(forceVector*enemyTouchForce, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(.3f);
+        asTouchedEnemy = false;
+    }
 }
