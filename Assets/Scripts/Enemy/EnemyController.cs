@@ -8,19 +8,25 @@ public class EnemyController : MonoBehaviour {
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private int damagesDone;
+    [SerializeField] private Transform[] wayPoints;
 
     private Transform player;
+    private GameObject gameManager;
+    public Transform currentWayPoint;
+
     //Scripts
     private Rigidbody2D rigid;
-    private PlayerHealth playerHealthScript;
+    private GameManager gameManagerScript;
     private PlayerMovement playerMovementScript;
     private SpriteRenderer spriteRendererComponent;
 
     void Start ()
     {
+        currentWayPoint = wayPoints[0];
         rigid = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        playerHealthScript = player.GetComponent<PlayerHealth>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        gameManagerScript = gameManager.GetComponent<GameManager>();
         playerMovementScript = player.GetComponent<PlayerMovement>();
         spriteRendererComponent = GetComponent<SpriteRenderer>();
        
@@ -31,7 +37,7 @@ public class EnemyController : MonoBehaviour {
         float yVel = rigid.velocity.y;
 
         //Flip the sprite toward the player
-        Vector2 vectorToPlayer = transform.position - player.position;
+        Vector2 vectorToPlayer = transform.position - currentWayPoint.position;
         spriteRendererComponent.flipX = (vectorToPlayer.x > 0);
 
 
@@ -39,8 +45,11 @@ public class EnemyController : MonoBehaviour {
 
     void FixedUpdate ()
     {
-        Vector2 playerPos = new Vector2(player.position.x, transform.position.y);
-    
+        Vector2 playerPos = new Vector2(currentWayPoint.position.x, transform.position.y);
+        if(transform.position.x == currentWayPoint.position.x)
+        {
+            currentWayPoint = NextWayPoint();
+        }
         transform.position = Vector3.MoveTowards(transform.position, playerPos, moveSpeed);
 	}
 
@@ -52,8 +61,22 @@ public class EnemyController : MonoBehaviour {
 
             Vector2 forceToApply = new Vector2(contacts.point.x - player.position.x, contacts.point.y - player.position.y);
             playerMovementScript.StartCoroutine("EnemyTouch", -forceToApply);
-            playerHealthScript.RemoveLife(damagesDone);
+            gameManagerScript.RemoveHealth(damagesDone);
             Destroy(gameObject);
         }
+    }
+
+    Transform NextWayPoint()
+    {
+        Transform newWayPoint;
+        if (currentWayPoint == wayPoints[0])
+        {
+            newWayPoint = wayPoints[1];
+        }
+        else
+        {
+            newWayPoint = wayPoints[0];
+        }
+        return newWayPoint;
     }
 }
