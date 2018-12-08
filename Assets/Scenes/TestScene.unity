@@ -1218,6 +1218,21 @@ Prefab:
       propertyPath: player
       value: 
       objectReference: {fileID: 436767949}
+    - target: {fileID: 250806853196671288, guid: 4b997c97d6dd01e4da76c59cd8a63d13,
+        type: 2}
+      propertyPath: m_ForceMagnitude
+      value: -200
+      objectReference: {fileID: 0}
+    - target: {fileID: 250806853196671288, guid: 4b997c97d6dd01e4da76c59cd8a63d13,
+        type: 2}
+      propertyPath: m_ForceMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250806853196671288, guid: 4b997c97d6dd01e4da76c59cd8a63d13,
+        type: 2}
+      propertyPath: m_DistanceScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b997c97d6dd01e4da76c59cd8a63d13, type: 2}
   m_IsPrefabAsset: 0

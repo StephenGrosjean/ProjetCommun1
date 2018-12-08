@@ -13,7 +13,7 @@ public class Door : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.UpArrow) && isInside){
+        if (Input.GetButtonDown("Fire2") && isInside){
             SceneManager.LoadScene(sceneToLoad);
         }
 	}
