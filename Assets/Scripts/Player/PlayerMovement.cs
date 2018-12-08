@@ -23,10 +23,14 @@ public class PlayerMovement : MonoBehaviour {
     private bool isGrounded;
     private bool asTouchedEnemy;
 
+    private int lastAxis;
+    public int currentAxis;
+
 	void Start () {
         rigid = GetComponent<Rigidbody2D>();
         animatorComponent = playerSpriteObject.GetComponent<Animator>();
         spriteComponent = playerSpriteObject.GetComponent<SpriteRenderer>();
+        currentAxis = 1;
 	}
     private void OnDrawGizmos()
     {
@@ -36,19 +40,35 @@ public class PlayerMovement : MonoBehaviour {
         axis = Input.GetAxis("Horizontal");
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        float yVel = rigid.velocity.y;
-        spriteComponent.flipX = (axis < 0);
+        lastAxis = currentAxis;
 
+        if((axis > -1.0f && axis < -0.1f) || (axis < 1.0f && axis > 0.1f))
+        {
+            currentAxis = Mathf.CeilToInt(axis);
+        }
 
+        if (currentAxis != lastAxis)
+        {
+            if(currentAxis > 0)
+            {
+                spriteComponent.flipX = false;
 
-        if (Input.GetKeyDown(KeyCode.Space)){
+            }
+            else
+            {
+                spriteComponent.flipX = true;
+
+            }
+        }
+
+        if (Input.GetButtonDown("Jump")){
             jumpPressed = true;
         }
-        else if (Input.GetKeyUp(KeyCode.Space)){
-            jumpPressed = Input.GetKeyDown(KeyCode.Space);
+        else if (Input.GetButtonUp("Jump")){
+            jumpPressed = Input.GetButtonDown("Jump");
         }
         else{
-            jumpPressed = Input.GetKeyDown(KeyCode.Space);
+            jumpPressed = Input.GetButtonDown("Jump");
         }
 
         if (isGrounded && jumpPressed){
