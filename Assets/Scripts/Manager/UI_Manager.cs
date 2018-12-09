@@ -7,6 +7,7 @@ using TMPro;
 public class UI_Manager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI textScore, textLifes;
     [SerializeField] private Image[] healthSprites;
+    [SerializeField] private Sprite goodSprite, badSprite;
 
     [SerializeField] private int health;
     public int Health
@@ -91,66 +92,71 @@ public class UI_Manager : MonoBehaviour {
         switch (health)
         {
             case 6:
-                healthSprites[5].enabled = true;
-                healthSprites[4].enabled = true;
-                healthSprites[3].enabled = true;
-                healthSprites[2].enabled = true;
-                healthSprites[1].enabled = true;
-                healthSprites[0].enabled = true;
+                changeSprite(5, goodSprite);
+                changeSprite(4, goodSprite);
+                changeSprite(3, goodSprite);
+                changeSprite(2, goodSprite);
+                changeSprite(1, goodSprite);
+                changeSprite(0, goodSprite);
                 break;
 
             case 5:
-                healthSprites[5].enabled = false;
-                healthSprites[4].enabled = true;
-                healthSprites[3].enabled = true;
-                healthSprites[2].enabled = true;
-                healthSprites[1].enabled = true;
-                healthSprites[0].enabled = true;
+                changeSprite(5, badSprite);
+                changeSprite(4, goodSprite);
+                changeSprite(3, goodSprite);
+                changeSprite(2, goodSprite);
+                changeSprite(1, goodSprite);
+                changeSprite(0, goodSprite);
                 break;
 
             case 4:
-                healthSprites[5].enabled = false;
-                healthSprites[4].enabled = false;
-                healthSprites[3].enabled = true;
-                healthSprites[2].enabled = true;
-                healthSprites[1].enabled = true;
-                healthSprites[0].enabled = true;
+                changeSprite(5, badSprite);
+                changeSprite(4, badSprite);
+                changeSprite(3, goodSprite);
+                changeSprite(2, goodSprite);
+                changeSprite(1, goodSprite);
+                changeSprite(0, goodSprite);
                 break;
 
             case 3:
-                healthSprites[5].enabled = false;
-                healthSprites[4].enabled = false;
-                healthSprites[3].enabled = false;
-                healthSprites[2].enabled = true;
-                healthSprites[1].enabled = true;
-                healthSprites[0].enabled = true;
+                changeSprite(5, badSprite);
+                changeSprite(4, badSprite);
+                changeSprite(3, badSprite);
+                changeSprite(2, goodSprite);
+                changeSprite(1, goodSprite);
+                changeSprite(0, goodSprite);
                 break;
 
             case 2:
-                healthSprites[5].enabled = false;
-                healthSprites[4].enabled = false;
-                healthSprites[3].enabled = false;
-                healthSprites[2].enabled = false;
-                healthSprites[1].enabled = true;
-                healthSprites[0].enabled = true;
+                changeSprite(5, badSprite);
+                changeSprite(4, badSprite);
+                changeSprite(3, badSprite);
+                changeSprite(2, badSprite);
+                changeSprite(1, goodSprite);
+                changeSprite(0, goodSprite);
                 break;
 
             case 1:
-                healthSprites[5].enabled = false;
-                healthSprites[4].enabled = false;
-                healthSprites[3].enabled = false;
-                healthSprites[2].enabled = false;
-                healthSprites[1].enabled = false;
-                healthSprites[0].enabled = true;
+                changeSprite(5, badSprite);
+                changeSprite(4, badSprite);
+                changeSprite(3, badSprite);
+                changeSprite(2, badSprite);
+                changeSprite(1, badSprite);
+                changeSprite(0, goodSprite);
                 break;
             case 0:
-                healthSprites[5].enabled = false;
-                healthSprites[4].enabled = false;
-                healthSprites[3].enabled = false;
-                healthSprites[2].enabled = false;
-                healthSprites[1].enabled = false;
-                healthSprites[0].enabled = false;
+                changeSprite(5, badSprite);
+                changeSprite(4, badSprite);
+                changeSprite(3, badSprite);
+                changeSprite(2, badSprite);
+                changeSprite(1, badSprite);
+                changeSprite(0, badSprite);
                 break;
         }
+    }
+
+    void changeSprite(int ID, Sprite sprite)
+    {
+        healthSprites[ID].sprite = sprite;
     }
 }

@@ -9,14 +9,18 @@ public class PlayerAttack : MonoBehaviour {
     [SerializeField] private GameObject lockedObject;
     [SerializeField] private Transform throwPositionLeft, throwPositionRight;
     [SerializeField] private int throwForce;
-
+    [SerializeField] private AudioClip throwSound, magnetSound;
 
     private bool locked;
     private SpriteRenderer playerSpriteRenderer;
+    private AudioSource audioSourceComponent;
+    private GameManager gameManagerScript;
 
     private void Start()
     {
         playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
+        audioSourceComponent = GetComponent<AudioSource>();
+        gameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     private void Update()
@@ -49,24 +53,35 @@ public class PlayerAttack : MonoBehaviour {
             lockedObject.GetComponent<EnemyController>().enabled = false;
             lockedObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             lockedObject.layer = 10;
-           
+            gameManagerScript.IncreaseScore(100);
         }
     }
 
     void Catch()
-    {
+    { 
+        audioSourceComponent.clip = magnetSound;
+        audioSourceComponent.loop = true;
+        if (!audioSourceComponent.isPlaying)
+        {
+            audioSourceComponent.Play();
+
+        }
         magnet.SetActive(true);
         GetComponent<CircleCollider2D>().enabled = !locked;
     }
 
     void CancelCatch()
     {
+        audioSourceComponent.loop = false;
+        audioSourceComponent.Stop();
         magnet.SetActive(false);
         GetComponent<CircleCollider2D>().enabled = false;
     }
 
     void Release()
     {
+        audioSourceComponent.PlayOneShot(throwSound);
+
         Rigidbody2D lockedObjectRigid = lockedObject.GetComponent<Rigidbody2D>();
 
 
@@ -91,11 +106,5 @@ public class PlayerAttack : MonoBehaviour {
 
         lockedObject.GetComponent<ThrowMode>().IsThrowed = true;
         lockedObject = null;
-
-        
-
-
-
-
     }
 }

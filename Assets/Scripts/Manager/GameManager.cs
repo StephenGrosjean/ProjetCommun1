@@ -86,6 +86,11 @@ public class GameManager : MonoBehaviour {
         lifes--;
     }
 
+    public void IncreaseScore(int scoreToAdd)
+    {
+        score += scoreToAdd;
+    }
+
 
     //Timer to remove life
     IEnumerator HealthTimer()

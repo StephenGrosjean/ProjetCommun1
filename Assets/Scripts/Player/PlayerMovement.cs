@@ -13,11 +13,14 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float groundCheckRadius;
     [SerializeField] private float enemyTouchForce;
     [SerializeField] private GameObject playerSpriteObject;
+    [SerializeField] private AudioClip jumpSound;
 
 
     private Animator animatorComponent;
     private SpriteRenderer spriteComponent;
     private Rigidbody2D rigid;
+    private AudioSource audioSourceComponent;
+
     private float axis;
     private bool jumpPressed;
     private bool isGrounded;
@@ -30,6 +33,7 @@ public class PlayerMovement : MonoBehaviour {
         rigid = GetComponent<Rigidbody2D>();
         animatorComponent = playerSpriteObject.GetComponent<Animator>();
         spriteComponent = playerSpriteObject.GetComponent<SpriteRenderer>();
+        audioSourceComponent = GetComponent<AudioSource>();
         currentAxis = 1;
 	}
     private void OnDrawGizmos()
@@ -74,6 +78,7 @@ public class PlayerMovement : MonoBehaviour {
         if (isGrounded && jumpPressed){
             Vector2 force = new Vector2(0, jumpForce);
             rigid.AddForce(force, ForceMode2D.Impulse);
+            audioSourceComponent.PlayOneShot(jumpSound);
         }
 
         animatorComponent.SetBool("isWalking", ((axis != 0) && isGrounded));

@@ -25,13 +25,13 @@ public class PlayerHealth : MonoBehaviour {
     //Scripts
     private PlayerMovement playerMovementScript;
     private Rigidbody2D rigid;
-    private CircleCollider2D colliderScript;
+    private Collider2D colliderScript;
 
     private void Start(){
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         playerMovementScript = GetComponent<PlayerMovement>();
         rigid = GetComponent<Rigidbody2D>();
-        colliderScript = GetComponent<CircleCollider2D>();
+        colliderScript = GetComponent<Collider2D>();
         thisScene = "TestScene";
     }
 
@@ -50,6 +50,7 @@ public class PlayerHealth : MonoBehaviour {
             SceneManager.LoadScene(thisScene);
         }
     }
+
 
     //Death sequence
     IEnumerator DeathSequence(string Type){

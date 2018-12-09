@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour {
     [SerializeField] private float moveSpeed;
     [SerializeField] private int damagesDone;
     [SerializeField] private Transform[] wayPoints;
+    [SerializeField] private AudioClip destroySound;
 
     private Transform player;
     private GameObject gameManager;
@@ -19,6 +20,7 @@ public class EnemyController : MonoBehaviour {
     private GameManager gameManagerScript;
     private PlayerMovement playerMovementScript;
     private SpriteRenderer spriteRendererComponent;
+    private AudioSource audioSourceComponent;
 
     void Start ()
     {
@@ -29,6 +31,7 @@ public class EnemyController : MonoBehaviour {
         gameManagerScript = gameManager.GetComponent<GameManager>();
         playerMovementScript = player.GetComponent<PlayerMovement>();
         spriteRendererComponent = GetComponent<SpriteRenderer>();
+        audioSourceComponent = GetComponent<AudioSource>();
        
 	}
 
@@ -62,6 +65,7 @@ public class EnemyController : MonoBehaviour {
             Vector2 forceToApply = new Vector2(contacts.point.x - player.position.x, contacts.point.y - player.position.y);
             playerMovementScript.StartCoroutine("EnemyTouch", -forceToApply);
             gameManagerScript.RemoveHealth(damagesDone);
+            audioSourceComponent.PlayOneShot(destroySound);
             Destroy(gameObject);
         }
     }
