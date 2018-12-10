@@ -7,6 +7,8 @@ public class PlayerHealth : MonoBehaviour {
     [SerializeField] private float minimumPosition;
     [SerializeField] private float destroyPosition;
     [SerializeField] private float deathForceFall, deathForceLife;
+    [SerializeField] private Sprite deathSprite;
+    [SerializeField] private GameObject spriteObj;
 
     private int health = 1;
     public int Health
@@ -76,7 +78,7 @@ public class PlayerHealth : MonoBehaviour {
 
             case "Life":
                 rigid.AddForce(new Vector2(0, deathForceLife), ForceMode2D.Impulse);
-                
+                spriteObj.GetComponent<Animator>().SetBool("isJumping", true);
                 break;
         }
         yield return new WaitForSeconds(1.5f);

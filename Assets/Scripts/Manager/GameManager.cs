@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour {
         {
             positionHolder = posHolderGameObject.GetComponent<PosHolder>();
 
-            Invoke("SpawnPos", 0.2f);
+            Invoke("SpawnPos", 0);
         }
     }
 

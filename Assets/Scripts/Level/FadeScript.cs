@@ -12,15 +12,10 @@ public class FadeScript : MonoBehaviour {
         spriteComponent = GetComponent<SpriteRenderer>();
         StartCoroutine("FadeIn");
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     public IEnumerator FadeOut(string sceneToGo)
     {
-        for(float i = 0.0f; i < 1.1f; i += 0.05f)
+        for (float i = 0.0f; i < 1.1f; i += 0.05f)
         {
             spriteComponent.color = new Color(1, 1, 1, i);
             yield return new WaitForSeconds(speed);

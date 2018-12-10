@@ -199,7 +199,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1972996381976980}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.093, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4764751575750944}
@@ -212,7 +212,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1368168245156930}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
+  m_LocalPosition: {x: 0, y: 0.87, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4764751575750944}
@@ -714,7 +714,7 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1972996381976980}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 43e929eff635fa84299d42c18f06505e, type: 2}
   m_CullingMode: 0
@@ -806,6 +806,8 @@ MonoBehaviour:
   destroyPosition: -5
   deathForceFall: 25
   deathForceLife: 12
+  deathSprite: {fileID: 21300000, guid: 25873eb05b46cf44c8679b7519b5afaa, type: 3}
+  spriteObj: {fileID: 1972996381976980}
 --- !u!212 &212115970984079462
 SpriteRenderer:
   m_ObjectHideFlags: 1
