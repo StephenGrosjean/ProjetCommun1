@@ -5,7 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyController : MonoBehaviour {
-
+    [SerializeField] private GameObject deathParticles;
     [SerializeField] private float moveSpeed;
     [SerializeField] private int damagesDone;
     [SerializeField] private Transform[] wayPoints;
@@ -66,6 +66,7 @@ public class EnemyController : MonoBehaviour {
             playerMovementScript.StartCoroutine("EnemyTouch", -forceToApply);
             gameManagerScript.RemoveHealth(damagesDone);
             audioSourceComponent.PlayOneShot(destroySound);
+            DestroyParticles();
             Destroy(gameObject);
         }
     }
@@ -82,5 +83,10 @@ public class EnemyController : MonoBehaviour {
             newWayPoint = wayPoints[0];
         }
         return newWayPoint;
+    }
+
+    public void DestroyParticles()
+    { 
+        Instantiate(deathParticles, transform.position, Quaternion.identity);
     }
 }

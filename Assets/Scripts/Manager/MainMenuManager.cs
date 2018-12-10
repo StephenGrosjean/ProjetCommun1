@@ -18,7 +18,7 @@ public class MainMenuManager : MonoBehaviour {
     }
 
     void Update () {
-        if (Input.GetButtonDown("Jump") && !fadeCalled)
+        if (Input.GetButtonDown("Fire3") && !fadeCalled)
         {
             fadeCalled = true;
             StartCoroutine("FadeOut");

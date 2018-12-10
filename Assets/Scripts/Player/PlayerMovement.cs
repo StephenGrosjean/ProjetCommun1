@@ -41,49 +41,55 @@ public class PlayerMovement : MonoBehaviour {
         Gizmos.DrawSphere(groundCheck.position, groundCheckRadius);
     }
     private void Update(){
-        axis = Input.GetAxis("Horizontal");
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
-        lastAxis = currentAxis;
-
-        if((axis > -1.0f && axis < -0.1f) || (axis < 1.0f && axis > 0.1f))
+        if (Time.timeScale == 1)
         {
-            currentAxis = Mathf.CeilToInt(axis);
-        }
+            axis = Input.GetAxis("Horizontal");
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        if (currentAxis != lastAxis)
-        {
-            if(currentAxis > 0)
+            lastAxis = currentAxis;
+
+            if ((axis > -1.0f && axis < -0.1f) || (axis < 1.0f && axis > 0.1f))
             {
-                spriteComponent.flipX = false;
+                currentAxis = Mathf.CeilToInt(axis);
+            }
 
+            if (currentAxis != lastAxis)
+            {
+                if (currentAxis > 0)
+                {
+                    spriteComponent.flipX = false;
+
+                }
+                else
+                {
+                    spriteComponent.flipX = true;
+
+                }
+            }
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                jumpPressed = true;
+            }
+            else if (Input.GetButtonUp("Jump"))
+            {
+                jumpPressed = Input.GetButtonDown("Jump");
             }
             else
             {
-                spriteComponent.flipX = true;
-
+                jumpPressed = Input.GetButtonDown("Jump");
             }
-        }
 
-        if (Input.GetButtonDown("Jump")){
-            jumpPressed = true;
-        }
-        else if (Input.GetButtonUp("Jump")){
-            jumpPressed = Input.GetButtonDown("Jump");
-        }
-        else{
-            jumpPressed = Input.GetButtonDown("Jump");
-        }
+            if (isGrounded && jumpPressed)
+            {
+                Vector2 force = new Vector2(0, jumpForce);
+                rigid.AddForce(force, ForceMode2D.Impulse);
+                audioSourceComponent.PlayOneShot(jumpSound);
+            }
 
-        if (isGrounded && jumpPressed){
-            Vector2 force = new Vector2(0, jumpForce);
-            rigid.AddForce(force, ForceMode2D.Impulse);
-            audioSourceComponent.PlayOneShot(jumpSound);
+            animatorComponent.SetBool("isWalking", ((axis != 0) && isGrounded));
+            animatorComponent.SetBool("isJumping", !isGrounded);
         }
-
-        animatorComponent.SetBool("isWalking", ((axis != 0) && isGrounded));
-        animatorComponent.SetBool("isJumping", !isGrounded);
-
 
     }
 

@@ -31,6 +31,7 @@ public class ThrowMode : MonoBehaviour {
                 Destroy(other.gameObject);
             }
             audioSourceComponent.PlayOneShot(destroySound);
+            GetComponent<EnemyController>().DestroyParticles();
             Destroy(gameObject);
         }
     }

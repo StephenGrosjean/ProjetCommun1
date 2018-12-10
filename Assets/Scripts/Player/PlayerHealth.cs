@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
 
@@ -15,6 +13,12 @@ public class PlayerHealth : MonoBehaviour {
     {
         get { return health; }
         set { health = value; }
+    }
+
+    private int life = 3;
+    public int Life
+    {
+        set { life = value; }
     }
     private GameManager gameManager;
 
@@ -32,7 +36,7 @@ public class PlayerHealth : MonoBehaviour {
         playerMovementScript = GetComponent<PlayerMovement>();
         rigid = GetComponent<Rigidbody2D>();
         colliderScript = GetComponent<Collider2D>();
-        thisScene = "TestScene";
+        thisScene = SceneManager.GetActiveScene().name;
     }
 
     private void Update(){
@@ -48,6 +52,11 @@ public class PlayerHealth : MonoBehaviour {
 
        if(transform.position.y <= destroyPosition && canKill){
             SceneManager.LoadScene(thisScene);
+        }
+
+       if(life < 0)
+        {
+            SceneManager.LoadScene("Scene_GameOver");
         }
     }
 
@@ -72,6 +81,7 @@ public class PlayerHealth : MonoBehaviour {
         }
         yield return new WaitForSeconds(1.5f);
         gameManager.RemoveLife();
+        PlayerPrefs.DeleteAll();
         canKill = true;
     }
 }

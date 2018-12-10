@@ -16,31 +16,43 @@ public class PlayerAttack : MonoBehaviour {
     private AudioSource audioSourceComponent;
     private GameManager gameManagerScript;
 
+    private ThrowerState throwerScriptLeft, throwScriptRight;
+    private bool canThrowLeft, canThrowRight;
+
     private void Start()
     {
         playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
         audioSourceComponent = GetComponent<AudioSource>();
         gameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        throwerScriptLeft = throwPositionLeft.GetComponent<ThrowerState>();
+        throwScriptRight = throwPositionRight.GetComponent<ThrowerState>();
     }
 
     private void Update()
     {
-        if (locked)
+        if (Time.timeScale == 1)
         {
-            lockedObject.transform.position = stuckPosition.position;
-            Invoke("CancelCatch", 0);
-        }
+            canThrowLeft = !throwerScriptLeft.IsInside;
+            canThrowRight = !throwScriptRight.IsInside;
 
-        if (Input.GetButtonDown("Fire1") && locked)
-        {
-            Invoke("Release", 0);
-        }
-        else if(Input.GetButtonDown("Fire1") && !locked)
-        {
-            Invoke("Catch", 0);
-        }else if(Input.GetButtonUp("Fire1") && !locked)
-        {
-            Invoke("CancelCatch", 0);
+            if (locked)
+            {
+                lockedObject.transform.position = stuckPosition.position;
+                Invoke("CancelCatch", 0);
+            }
+
+            if (Input.GetButtonDown("Fire1") && locked)
+            {
+                Invoke("Release", 0);
+            }
+            else if (Input.GetButtonDown("Fire1") && !locked)
+            {
+                Invoke("Catch", 0);
+            }
+            else if (Input.GetButtonUp("Fire1") && !locked)
+            {
+                Invoke("CancelCatch", 0);
+            }
         }
     }
 
@@ -80,31 +92,48 @@ public class PlayerAttack : MonoBehaviour {
 
     void Release()
     {
-        audioSourceComponent.PlayOneShot(throwSound);
 
-        Rigidbody2D lockedObjectRigid = lockedObject.GetComponent<Rigidbody2D>();
-
-
-        lockedObject.GetComponent<EnemyController>().enabled = true;
-        lockedObjectRigid.constraints = RigidbodyConstraints2D.None;
-        lockedObjectRigid.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
-        lockedObjectRigid.gravityScale = 0;
-
-        lockedObject.layer = 12;
-        locked = false;
-
-        if (playerSpriteRenderer.flipX)
+        if (playerSpriteRenderer.flipX && canThrowLeft)
         {
+            audioSourceComponent.PlayOneShot(throwSound);
+
+            Rigidbody2D lockedObjectRigid = lockedObject.GetComponent<Rigidbody2D>();
+
+
+            lockedObject.GetComponent<EnemyController>().enabled = true;
+            lockedObjectRigid.constraints = RigidbodyConstraints2D.None;
+            lockedObjectRigid.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
+            lockedObjectRigid.gravityScale = 0;
+
+            lockedObject.layer = 12;
+            locked = false;
+
             lockedObject.transform.position = throwPositionLeft.position;
             lockedObjectRigid.velocity = Vector2.left * throwForce;
+
+            lockedObject.GetComponent<ThrowMode>().IsThrowed = true;
+            lockedObject = null;
         }
-        else
+        else if(!playerSpriteRenderer.flipX && canThrowRight)
         {
+            audioSourceComponent.PlayOneShot(throwSound);
+
+            Rigidbody2D lockedObjectRigid = lockedObject.GetComponent<Rigidbody2D>();
+
+
+            lockedObject.GetComponent<EnemyController>().enabled = true;
+            lockedObjectRigid.constraints = RigidbodyConstraints2D.None;
+            lockedObjectRigid.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
+            lockedObjectRigid.gravityScale = 0;
+
+            lockedObject.layer = 12;
+            locked = false;
+
             lockedObject.transform.position = throwPositionRight.position;
             lockedObjectRigid.velocity = Vector2.right * throwForce;
-        }
 
-        lockedObject.GetComponent<ThrowMode>().IsThrowed = true;
-        lockedObject = null;
+            lockedObject.GetComponent<ThrowMode>().IsThrowed = true;
+            lockedObject = null;
+        }
     }
 }
