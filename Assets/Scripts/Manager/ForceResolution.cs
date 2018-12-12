@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class ForceResolution : MonoBehaviour {
 
-    [SerializeField] private int xRes, yRes;
+    [SerializeField] private int xReso = 640;
+    [SerializeField] private int yReso = 576;
     
     void Start () {
-        Screen.SetResolution(xRes, yRes, false);
+        Screen.SetResolution(xReso, yReso, false);
     }
 	
 }
